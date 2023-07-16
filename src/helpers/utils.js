@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 // @flow
 export type LayoutItemRequired = {w: number, h: number, x: number, y: number, i: string};
 export type LayoutItem = LayoutItemRequired &
@@ -114,20 +116,23 @@ export function compact(layout: Layout, verticalCompact: Boolean, minPositions):
 export function compactItem(compareWith: Layout, l: LayoutItem, verticalCompact: boolean, minPositions): LayoutItem {
   if (verticalCompact) {
     // Move the element up as far as it can go without colliding.
-    while (l.y > 0 && !getFirstCollision(compareWith, l)) {
-      l.y--;
+    while (l.x > 0 && !getFirstCollision(compareWith, l)) {
+      l.x--;
     }
+    // while (l.y > 0 && !getFirstCollision(compareWith, l)) {
+    //   l.y--;
+    // }
   } else if (minPositions) {
-    const minY = minPositions[l.i].y;
-    while (l.y > minY && !getFirstCollision(compareWith, l)) {
-      l.y--;
+    const minX = minPositions[l.i].x;
+    while (l.x > minX && !getFirstCollision(compareWith, l)) {
+      l.x--;
     }
   }
 
   // Move it down, and keep moving it down if it's colliding.
   let collides;
   while((collides = getFirstCollision(compareWith, l))) {
-    l.y = collides.y + collides.h;
+    l.x = collides.x + collides.w;
   }
   return l;
 }
@@ -254,6 +259,14 @@ export function moveElement(layout: Layout, l: LayoutItem, x: Number, y: Number,
     if (l.y > collision.y && l.y - collision.y > collision.h / 4) continue;
 
     // Don't move static items - we have to move *this* element away
+    console.log('full')
+    if(isRowFull(layout, collision.y, 12)) {
+      
+      l.x = oldX;
+      l.y = oldY;
+      l.moved = false;
+      return layout;
+    }
     if (collision.static) {
       layout = moveElementAwayFromCollision(layout, collision, l, isUserAction);
     } else {
@@ -262,6 +275,17 @@ export function moveElement(layout: Layout, l: LayoutItem, x: Number, y: Number,
   }
 
   return layout;
+}
+
+export function isRowFull(layout: Layout, rowNum: number, rowWidth: number) {
+  let row = _.filter(layout, d => (d.y === rowNum));
+  let width = row.map((h) => h.w).reduce((a, b) => a + b, 0);
+  console.log(row)
+  console.log(width)
+  if(width >= rowWidth) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -281,6 +305,8 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
   // If there is enough space above the collision to put this element, move it there.
   // We only do this on the main collision as this can get funky in cascades and cause
   // unwanted swapping behavior.
+  
+
   if (isUserAction) {
     // Make a mock item so we don't modify the item here, only modify in moveElement.
     const fakeItem: LayoutItem = {
@@ -290,15 +316,22 @@ export function moveElementAwayFromCollision(layout: Layout, collidesWith: Layou
       h: itemToMove.h,
       i: '-1'
     };
-    fakeItem.y = Math.max(collidesWith.y - itemToMove.h, 0);
+    fakeItem.x = Math.max(collidesWith.x - itemToMove.w, 0);
+    // if(isRowFull(layout, 0, 12)) {
+    //   return moveElement(layout, collidesWith, collidesWith.x, collidesWith.y, preventCollision);
+    // }
+    // fakeItem.y = 0;
     if (!getFirstCollision(layout, fakeItem)) {
-      return moveElement(layout, itemToMove, undefined, fakeItem.y, preventCollision);
+      return moveElement(layout, itemToMove, fakeItem.x, undefined, preventCollision);
     }
+    
   }
 
+  
+    
   // Previously this was optimized to move below the collision directly, but this can cause problems
   // with cascading moves, as an item may actually leapflog a collision and cause a reversal in order.
-  return moveElement(layout, itemToMove, undefined, itemToMove.y + 1, preventCollision);
+  return moveElement(layout, itemToMove, itemToMove.x + 1,undefined, preventCollision);
 }
 
 /**

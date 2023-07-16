@@ -73,7 +73,7 @@ export default {
 
 <style>
 .container .vue-grid-item.vue-grid-placeholder {
-    background: green;
+    background: rgb(19, 0, 192);
 }
 
 .vue-grid-layout {

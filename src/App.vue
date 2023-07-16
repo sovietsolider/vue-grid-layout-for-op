@@ -20,7 +20,7 @@
                 </div>
             </div>-->
         </div>
-        <div id="content">
+        <div id="content" class="container">
             <button @click="decreaseWidth">Decrease Width</button>
             <button @click="increaseWidth">Increase Width</button>
             <button @click="scaleHalf">Scale x0.5</button>
@@ -127,26 +127,21 @@
     //var eventBus = require('./eventBus');
 
     let testLayout = [
-        {"x":0,"y":0,"w":2,"h":2,"i":"0", resizable: true, draggable: true, static: false, minY: 0, maxY: 2},
-        {"x":2,"y":0,"w":2,"h":4,"i":"1", resizable: null, draggable: null, static: true},
-        {"x":4,"y":0,"w":2,"h":5,"i":"2", resizable: false, draggable: false, static: false, minX: 4, maxX: 4, minW: 2, maxW: 2, preserveAspectRatio: true},
-        {"x":6,"y":0,"w":2,"h":3,"i":"3", resizable: false, draggable: false, static: false, preserveAspectRatio: true},
-        {"x":8,"y":0,"w":2,"h":3,"i":"4", resizable: false, draggable: false, static: false},
-        {"x":10,"y":0,"w":2,"h":3,"i":"5", resizable: false, draggable: false, static: false},
-        {"x":0,"y":5,"w":2,"h":5,"i":"6", resizable: false, draggable: false, static: false},
-        {"x":2,"y":5,"w":2,"h":5,"i":"7", resizable: false, draggable: false, static: false},
-        {"x":4,"y":5,"w":2,"h":5,"i":"8", resizable: false, draggable: false, static: false},
-        {"x":6,"y":3,"w":2,"h":4,"i":"9", resizable: false, draggable: false, static: true},
-        {"x":8,"y":4,"w":2,"h":4,"i":"10", resizable: false, draggable: false, static: false},
-        {"x":10,"y":4,"w":2,"h":4,"i":"11", resizable: false, draggable: false, static: false, minY: 4},
-        {"x":0,"y":10,"w":2,"h":5,"i":"12", resizable: false, draggable: false, static: false},
-        {"x":2,"y":10,"w":2,"h":5,"i":"13", resizable: false, draggable: false, static: false},
-        {"x":4,"y":8,"w":2,"h":4,"i":"14", resizable: false, draggable: false, static: false},
-        {"x":6,"y":8,"w":2,"h":4,"i":"15", resizable: false, draggable: false, static: false},
-        {"x":8,"y":10,"w":2,"h":5,"i":"16", resizable: false, draggable: false, static: false},
-        {"x":10,"y":4,"w":2,"h":2,"i":"17", resizable: false, draggable: false, static: false},
-        {"x":0,"y":9,"w":2,"h":3,"i":"18", resizable: false, draggable: false, static: false},
-        {"x":2,"y":6,"w":2,"h":2,"i":"19", resizable: false, draggable: false, static: false}
+        {"x":8,"y":0,"w":1,"h":1,"i":"1", resizable: false, draggable: false, static: false},
+        {"x":10,"y":0,"w":1,"h":1,"i":"2", resizable: false, draggable: false, static: false},
+        {"x":0,"y":5,"w":1,"h":1,"i":"3", resizable: false, draggable: false, static: false},
+        {"x":2,"y":5,"w":1,"h":1,"i":"4", resizable: false, draggable: false, static: false},
+        {"x":4,"y":5,"w":1,"h":1,"i":"5", resizable: false, draggable: false, static: false},
+        {"x":6,"y":3,"w":1,"h":1,"i":"6", resizable: false, draggable: false, static: true},
+        {"x":8,"y":4,"w":1,"h":1,"i":"7", resizable: false, draggable: false, static: false},
+        {"x":0,"y":10,"w":1,"h":1,"i":"8", resizable: false, draggable: false, static: false},
+        {"x":2,"y":10,"w":1,"h":1,"i":"9", resizable: false, draggable: false, static: false},
+        {"x":4,"y":8,"w":1,"h":1,"i":"10", resizable: false, draggable: false, static: false},
+        {"x":6,"y":8,"w":1,"h":1,"i":"11", resizable: false, draggable: false, static: false},
+        {"x":8,"y":10,"w":1,"h":1,"i":"12", resizable: false, draggable: false, static: false},
+        {"x":10,"y":4,"w":1,"h":1,"i":"13", resizable: false, draggable: false, static: false},
+        {"x":0,"y":9,"w":1,"h":1,"i":"14", resizable: false, draggable: false, static: false},
+        {"x":2,"y":6,"w":1,"h":1,"i":"15", resizable: false, draggable: false, static: false}
     ];
 
     /*let testLayout = [
@@ -241,19 +236,19 @@
                 this.layout.push(item);
             },
             move: function(i, newX, newY){
-                console.log("MOVE i=" + i + ", X=" + newX + ", Y=" + newY);
+                //console.log("MOVE i=" + i + ", X=" + newX + ", Y=" + newY);
             },
             resize: function(i, newH, newW, newHPx, newWPx){
-                console.log("RESIZE i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
+                //console.log("RESIZE i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
             },
             moved: function(i, newX, newY){
-                console.log("### MOVED i=" + i + ", X=" + newX + ", Y=" + newY);
+                //console.log("### MOVED i=" + i + ", X=" + newX + ", Y=" + newY);
             },
             resized: function(i, newH, newW, newHPx, newWPx){
-                console.log("### RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
+                //console.log("### RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
             },
             containerResized: function(i, newH, newW, newHPx, newWPx){
-                console.log("### CONTAINER RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
+                //console.log("### CONTAINER RESIZED i=" + i + ", H=" + newH + ", W=" + newW + ", H(px)=" + newHPx + ", W(px)=" + newWPx);
             },
             /**
              * Add change direction button
@@ -294,6 +289,9 @@
 </script>
 
 <style>
+.container .vue-grid-item.vue-grid-placeholder {
+    background: rgb(19, 0, 192);
+}
     /*    #app {
             font-family: 'Avenir', Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -323,6 +321,8 @@
 </style>
 
 <style lang="css">
+
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
